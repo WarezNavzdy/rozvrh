@@ -2,8 +2,8 @@ name: Auto Update Rozvrh JSON
 
 on:
   schedule:
-    - cron: '0 3 * * *' # Spustí se každý den ve 3:00 UTC
-  workflow_dispatch: # Přidá tlačítko pro ruční spuštění
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
 jobs:
   run-scraper:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Stáhnout kód z repozitáře
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Nastavit Python
         uses: actions/setup-python@v5
