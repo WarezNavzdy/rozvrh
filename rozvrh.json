@@ -1,23 +1,8 @@
 {
     "_debug": {
-        "cas_spusteni": "2026-09-14T20:32:55.896546",
-        "kroky": [
-            {
-                "akce": "anonymni_prihlaseni",
-                "status_code": 200,
-                "url": "https://is.cuni.cz/studium/login.php?do=anonym"
-            },
-            {
-                "akce": "otevreni_modulu_rozvrh",
-                "status_code": 200,
-                "url": "https://is.cuni.cz/studium/login.php"
-            },
-            {
-                "akce": "stazeni_rozvrhu",
-                "status_code": 200,
-                "url": "https://is.cuni.cz/studium/login.php"
-            }
-        ]
+        "cas_spusteni": "2026-09-14T20:33:34.691907",
+        "status_code": 200,
+        "vysledna_url": "https://is.cuni.cz/studium/login.php"
     },
     "data": []
 }
