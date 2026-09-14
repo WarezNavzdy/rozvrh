@@ -47,7 +47,7 @@ def get_schedule():
         return events
 
     except Exception as e:
-        print(f"Nastala chyba při zpracování: {e}")
+        print(f"Chyba skriptu: {e}")
         return []
 
 
@@ -57,6 +57,4 @@ if __name__ == "__main__":
     with open("rozvrh.json", "w", encoding="utf-8") as f:
         json.dump(schedule_data, f, ensure_ascii=False, indent=4)
 
-    print(
-        f"Hotovo! Vyextrahováno {len(schedule_data)} událostí do rozvrh.json."
-    )
+    print(f"Hotovo! Vyextrahováno {len(schedule_data)} událostí do rozvrh.json.")
