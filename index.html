@@ -1,16 +1,25 @@
-```html
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Rozvrh 1. LF UK</title>
 
+
   <style>
+
     :root {
+
       --navy: #0f172a;
       --navy-light: #1e293b;
+
       --blue: #38bdf8;
       --blue-dark: #0284c7;
 
@@ -19,16 +28,21 @@
 
       --text: #0f172a;
       --muted: #64748b;
+
       --border: #e2e8f0;
 
       --radius: 14px;
+
     }
+
 
     * {
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
 
       font-family:
@@ -40,27 +54,38 @@
         sans-serif;
 
       background: var(--bg);
+
       color: var(--text);
+
     }
 
-    /* =========================
+
+    /* ==========================================
        HEADER
-    ========================= */
+    ========================================== */
 
     header {
+
       background: var(--navy);
+
       color: white;
 
       position: sticky;
+
       top: 0;
 
       z-index: 100;
 
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.15);
+
     }
 
+
     .nav {
+
       max-width: 1400px;
+
       margin: auto;
 
       padding: 0 24px;
@@ -68,178 +93,320 @@
       height: 68px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       gap: 20px;
+
     }
 
+
     .logo {
+
       display: flex;
+
       align-items: center;
 
       gap: 12px;
 
       color: white;
+
       text-decoration: none;
 
       font-size: 20px;
+
       font-weight: 700;
+
     }
 
+
     .logo-mark {
+
       width: 38px;
+
       height: 38px;
 
       border-radius: 50%;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       background: var(--blue);
+
       color: var(--navy);
 
       font-size: 14px;
+
       font-weight: 900;
+
     }
+
 
     .nav-info {
+
       color: #cbd5e1;
+
       font-size: 14px;
+
     }
 
-    /* =========================
+
+    /* ==========================================
        MAIN
-    ========================= */
+    ========================================== */
 
     main {
+
       max-width: 1400px;
+
       margin: auto;
 
       padding: 30px 24px 60px;
+
     }
+
 
     .page-header {
+
       margin-bottom: 25px;
+
     }
 
+
     .page-header h1 {
+
       margin: 0 0 7px;
 
       font-size: 32px;
+
       letter-spacing: -0.5px;
+
     }
 
+
     .page-header p {
+
       margin: 0;
 
       color: var(--muted);
+
     }
 
-    /* =========================
-       INFO BAR
-    ========================= */
 
-    .info-bar {
+    /* ==========================================
+       WEEK NAVIGATION
+    ========================================== */
+
+    .week-navigation {
+
       background: white;
 
       border: 1px solid var(--border);
+
       border-radius: var(--radius);
 
-      padding: 15px 18px;
+      padding: 14px;
 
       margin-bottom: 28px;
 
       display: flex;
+
+      align-items: center;
+
       justify-content: space-between;
+
+      gap: 15px;
+
+    }
+
+
+    .week-button {
+
+      border: 1px solid var(--border);
+
+      background: white;
+
+      color: var(--text);
+
+      border-radius: 9px;
+
+      padding: 10px 15px;
+
+      font-size: 14px;
+
+      font-weight: 650;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+
+      white-space: nowrap;
+
+    }
+
+
+    .week-button:hover:not(:disabled) {
+
+      border-color: var(--blue);
+
+      color: var(--blue-dark);
+
+    }
+
+
+    .week-button:disabled {
+
+      opacity: 0.4;
+
+      cursor: default;
+
+    }
+
+
+    .week-current {
+
+      text-align: center;
+
+      min-width: 180px;
+
+    }
+
+
+    .week-title {
+
+      font-size: 19px;
+
+      font-weight: 750;
+
+    }
+
+
+    .week-counter {
+
+      margin-top: 3px;
+
+      font-size: 12px;
+
+      color: var(--muted);
+
+    }
+
+
+    /* ==========================================
+       INFO
+    ========================================== */
+
+    .info-bar {
+
+      background: white;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      padding: 13px 17px;
+
+      margin-bottom: 28px;
+
+      display: flex;
+
+      justify-content: space-between;
+
       align-items: center;
 
       gap: 15px;
+
     }
+
 
     .info-left {
+
       display: flex;
+
       align-items: center;
 
-      gap: 10px;
+      gap: 9px;
 
       font-size: 14px;
+
       color: var(--muted);
+
     }
 
+
     .status {
+
       width: 9px;
+
       height: 9px;
 
       border-radius: 50%;
 
       background: #22c55e;
+
     }
 
+
     .updated {
+
       color: var(--muted);
 
       font-size: 13px;
 
       text-align: right;
+
     }
 
-    /* =========================
-       LOADING / ERROR / EMPTY
-    ========================= */
 
-    .loading,
-    .error,
-    .empty {
-      background: white;
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-
-      padding: 40px;
-
-      text-align: center;
-
-      color: var(--muted);
-    }
-
-    .error {
-      color: #b91c1c;
-
-      background: #fff7f7;
-      border-color: #fecaca;
-    }
-
-    /* =========================
+    /* ==========================================
        DAY
-    ========================= */
+    ========================================== */
 
     .day {
+
       margin-bottom: 30px;
+
     }
 
+
     .day-header {
+
       display: flex;
+
       align-items: baseline;
 
       gap: 10px;
 
       margin-bottom: 10px;
+
     }
+
 
     .day-name {
+
       font-size: 22px;
+
       font-weight: 750;
+
     }
 
+
     .day-date {
+
       color: var(--muted);
 
       font-size: 15px;
+
     }
 
+
     .week-number {
+
       margin-left: auto;
 
       color: var(--muted);
@@ -251,22 +418,29 @@
       padding: 4px 8px;
 
       border-radius: 6px;
+
     }
 
-    /* =========================
+
+    /* ==========================================
        SCHEDULE
-    ========================= */
+    ========================================== */
 
     .schedule {
+
       background: var(--card);
 
       border: 1px solid var(--border);
+
       border-radius: var(--radius);
 
       overflow: hidden;
+
     }
 
+
     .lesson {
+
       display: grid;
 
       grid-template-columns: 105px 1fr;
@@ -274,73 +448,105 @@
       min-height: 96px;
 
       border-bottom: 1px solid var(--border);
+
     }
+
 
     .lesson:last-child {
+
       border-bottom: none;
+
     }
 
-    /* =========================
+
+    /* ==========================================
        TIME
-    ========================= */
+    ========================================== */
 
     .lesson-time {
+
       padding: 18px 15px;
 
       border-right: 1px solid var(--border);
 
       display: flex;
+
       flex-direction: column;
+
       justify-content: center;
+
     }
 
+
     .lesson-start {
+
       color: var(--text);
 
       font-size: 18px;
+
       font-weight: 750;
+
     }
 
+
     .lesson-end {
+
       color: var(--muted);
 
       font-size: 13px;
 
       margin-top: 3px;
+
     }
 
-    /* =========================
-       LESSON BODY
-    ========================= */
+
+    /* ==========================================
+       LESSON
+    ========================================== */
 
     .lesson-body {
+
       padding: 15px 20px;
 
       border-left: 4px solid var(--lesson-color, var(--blue));
 
       display: flex;
+
       flex-direction: column;
+
       justify-content: center;
+
     }
 
+
     .lesson-top {
+
       display: flex;
 
       align-items: flex-start;
+
       justify-content: space-between;
 
       gap: 15px;
+
     }
+
 
     .lesson-subject {
+
       font-size: 18px;
+
       font-weight: 750;
+
     }
 
+
     .lesson-type {
+
       flex-shrink: 0;
 
       font-size: 11px;
+
       font-weight: 700;
 
       text-transform: uppercase;
@@ -350,112 +556,225 @@
       border-radius: 5px;
 
       background: #e0f2fe;
+
       color: #0369a1;
+
     }
 
+
     .lesson-teacher {
+
       margin-top: 5px;
 
       color: var(--muted);
 
       font-size: 14px;
+
     }
 
-    /* =========================
+
+    /* ==========================================
        DETAILS
-    ========================= */
+    ========================================== */
 
     .lesson-details {
+
       display: flex;
+
       flex-wrap: wrap;
 
       gap: 8px;
 
       margin-top: 10px;
+
     }
 
+
     .detail {
+
       font-size: 12px;
 
       background: #f1f5f9;
+
       color: #475569;
 
       padding: 4px 7px;
 
       border-radius: 5px;
+
     }
 
-    /* =========================
+
+    /* ==========================================
+       EMPTY / LOADING / ERROR
+    ========================================== */
+
+    .loading,
+    .error,
+    .empty {
+
+      background: white;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      padding: 40px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+    }
+
+
+    .error {
+
+      color: #b91c1c;
+
+      background: #fff7f7;
+
+      border-color: #fecaca;
+
+    }
+
+
+    /* ==========================================
        MOBILE
-    ========================= */
+    ========================================== */
 
     @media (max-width: 700px) {
 
       .nav {
+
         padding: 0 15px;
+
       }
+
 
       .nav-info {
+
         display: none;
+
       }
+
 
       main {
+
         padding: 20px 12px 40px;
+
       }
+
 
       .page-header h1 {
+
         font-size: 27px;
+
       }
 
+
+      .week-navigation {
+
+        padding: 10px;
+
+      }
+
+
+      .week-button {
+
+        padding: 9px 10px;
+
+        font-size: 13px;
+
+      }
+
+
+      .week-current {
+
+        min-width: 0;
+
+      }
+
+
+      .week-title {
+
+        font-size: 16px;
+
+      }
+
+
       .info-bar {
+
         align-items: flex-start;
 
         flex-direction: column;
+
       }
+
 
       .updated {
+
         text-align: left;
+
       }
+
 
       .lesson {
+
         grid-template-columns: 78px 1fr;
+
       }
+
 
       .lesson-time {
+
         padding: 14px 10px;
+
       }
+
 
       .lesson-start {
+
         font-size: 16px;
+
       }
+
 
       .lesson-body {
+
         padding: 13px;
+
       }
 
+
       .lesson-top {
+
         flex-direction: column;
 
         gap: 7px;
+
       }
+
 
       .lesson-subject {
+
         font-size: 16px;
+
       }
 
-      .week-number {
-        font-size: 12px;
-      }
     }
+
   </style>
+
 </head>
 
 
 <body>
 
+
   <!-- ==========================================
        HEADER
-  =========================================== -->
+  ========================================== -->
 
   <header>
 
@@ -488,9 +807,10 @@
 
   <!-- ==========================================
        MAIN
-  =========================================== -->
+  ========================================== -->
 
   <main>
+
 
     <div class="page-header">
 
@@ -506,10 +826,57 @@
 
 
     <!-- ========================================
+         PŘEPÍNÁNÍ TÝDNŮ
+    ========================================= -->
+
+    <div class="week-navigation">
+
+
+      <button
+        id="prevWeek"
+        class="week-button"
+        type="button"
+      >
+        ← Předchozí týden
+      </button>
+
+
+      <div class="week-current">
+
+        <div
+          id="weekTitle"
+          class="week-title"
+        >
+          Načítám...
+        </div>
+
+        <div
+          id="weekCounter"
+          class="week-counter"
+        >
+        </div>
+
+      </div>
+
+
+      <button
+        id="nextWeek"
+        class="week-button"
+        type="button"
+      >
+        Další týden →
+      </button>
+
+
+    </div>
+
+
+    <!-- ========================================
          INFO
     ========================================= -->
 
     <div class="info-bar">
+
 
       <div class="info-left">
 
@@ -529,6 +896,7 @@
         Načítám...
       </div>
 
+
     </div>
 
 
@@ -544,18 +912,16 @@
 
     </div>
 
+
   </main>
 
 
-  <!-- ==========================================
-       JAVASCRIPT
-  =========================================== -->
-
   <script>
+
 
     /*
      * ========================================================
-     * SEM VLOŽ URL TVÉHO CLOUDFLARE WORKERU
+     * URL CLOUDFLARE WORKERU
      * ========================================================
      */
 
@@ -571,10 +937,14 @@
 
     let schedule = [];
 
+    let weeks = [];
+
+    let currentWeekIndex = 0;
+
 
     /*
      * ========================================================
-     * NAČTENÍ ROZVRHU
+     * NAČTENÍ
      * ========================================================
      */
 
@@ -586,17 +956,43 @@
 
       try {
 
+
         app.innerHTML = `
+
           <div class="loading">
+
             Načítám rozvrh...
+
           </div>
+
         `;
 
+
+        /*
+         * Kontrola URL
+         */
+
+        if (
+          !WORKER_URL ||
+          WORKER_URL.includes("SEM_VLOŽ")
+        ) {
+
+          throw new Error(
+            "Není nastavená URL Cloudflare Workeru."
+          );
+
+        }
+
+
+        /*
+         * Načtení Workeru
+         */
 
         const response =
           await fetch(
             WORKER_URL,
             {
+              method: "GET",
               cache: "no-store"
             }
           );
@@ -605,41 +1001,115 @@
         if (!response.ok) {
 
           throw new Error(
-            `HTTP ${response.status}`
+            `Worker vrátil HTTP ${response.status}`
           );
 
         }
 
+
+        /*
+         * JSON
+         */
 
         const data =
           await response.json();
 
 
         /*
-         * ----------------------------------------------------
-         * VEZMEME VŠECHNY DNY Z WORKERU
-         * ----------------------------------------------------
+         * Kontrola
+         */
+
+        if (
+          !data ||
+          !Array.isArray(data.days)
+        ) {
+
+          throw new Error(
+            "Worker nevrátil JSON s položkou 'days'."
+          );
+
+        }
+
+
+        /*
+         * Uložíme všechny dny
          */
 
         schedule =
-          Array.isArray(data.days)
-            ? data.days
-            : [];
+          data.days;
 
 
         /*
-         * ----------------------------------------------------
-         * VYKRESLENÍ
-         * ----------------------------------------------------
+         * ====================================================
+         * VYTVOŘENÍ SEZNAMU TÝDNŮ
+         * ====================================================
+         *
+         * Například:
+         *
+         * 1
+         * 2
+         * 3
+         * 4
+         * ...
+         *
          */
 
-        renderSchedule();
+        weeks = [
+          ...new Set(
+            schedule
+              .map(
+                day => day.week
+              )
+              .filter(
+                week =>
+                  week !== null &&
+                  week !== undefined
+              )
+          )
+        ].sort(
+          (a, b) =>
+            Number(a) - Number(b)
+        );
 
 
         /*
-         * ----------------------------------------------------
-         * DATUM AKTUALIZACE
-         * ----------------------------------------------------
+         * Pokud Worker neposílá číslo týdne,
+         * použijeme jednotlivé dny jako záložní řešení.
+         */
+
+        if (!weeks.length) {
+
+          weeks =
+            schedule.map(
+              (_, index) =>
+                index
+            );
+
+        }
+
+
+        /*
+         * ====================================================
+         * VYBEREME PRVNÍ TÝDEN
+         * ====================================================
+         *
+         * Tím pádem se po načtení zobrazí
+         * první týden rozvrhu, tedy 29. 9.
+         *
+         */
+
+        currentWeekIndex = 0;
+
+
+        /*
+         * Vykreslení
+         */
+
+        renderWeek();
+
+
+        /*
+         * Aktualizace
          */
 
         if (data.generatedAt) {
@@ -653,7 +1123,9 @@
           document.getElementById(
             "updated"
           ).textContent =
+
             "Aktualizováno: " +
+
             generated.toLocaleString(
               "cs-CZ",
               {
@@ -677,8 +1149,9 @@
 
       } catch (error) {
 
+
         console.error(
-          "Chyba při načítání:",
+          "CHYBA:",
           error
         );
 
@@ -688,7 +1161,7 @@
           <div class="error">
 
             <strong>
-              Nepodařilo se načíst rozvrh.
+              Chyba při načítání
             </strong>
 
             <br><br>
@@ -703,6 +1176,18 @@
 
 
         document.getElementById(
+          "weekTitle"
+        ).textContent =
+          "Chyba";
+
+
+        document.getElementById(
+          "weekCounter"
+        ).textContent =
+          "";
+
+
+        document.getElementById(
           "updated"
         ).textContent =
           "Chyba při načítání";
@@ -714,20 +1199,18 @@
 
     /*
      * ========================================================
-     * VYKRESLENÍ CELÉHO ROZVRHU
+     * VYKRESLENÍ AKTUÁLNÍHO TÝDNE
      * ========================================================
      */
 
-    function renderSchedule() {
+    function renderWeek() {
+
 
       const app =
         document.getElementById("app");
 
 
-      if (
-        !schedule ||
-        schedule.length === 0
-      ) {
+      if (!schedule.length) {
 
         app.innerHTML = `
 
@@ -745,17 +1228,123 @@
 
 
       /*
+       * Aktuální číslo týdne
+       */
+
+      const week =
+        weeks[currentWeekIndex];
+
+
+      /*
+       * Najdeme všechny dny patřící
+       * do aktuálního týdne.
+       */
+
+      let days =
+        schedule.filter(
+          day =>
+            Number(day.week) ===
+            Number(week)
+        );
+
+
+      /*
+       * ====================================================
+       * ZÁLOŽNÍ VARIANTA
+       * ====================================================
+       *
+       * Kdyby Worker neměl week,
+       * zobrazíme odpovídající den.
+       *
+       */
+
+      if (
+        !days.length &&
+        schedule.length
+      ) {
+
+        days = [
+          schedule[
+            currentWeekIndex
+          ]
+        ].filter(Boolean);
+
+      }
+
+
+      /*
        * ----------------------------------------------------
-       * DŮLEŽITÉ:
-       *
-       * TADY UŽ NENÍ ŽÁDNÉ FILTROVÁNÍ PODLE TÝDNE.
-       *
-       * ZOBRAZÍME VŠECHNY DNY, KTERÉ VRÁTÍ WORKER.
+       * Nadpis týdne
+       * ----------------------------------------------------
+       */
+
+      document.getElementById(
+        "weekTitle"
+      ).textContent =
+
+        `${week}. týden`;
+
+
+      document.getElementById(
+        "weekCounter"
+      ).textContent =
+
+        `Týden ${currentWeekIndex + 1} z ${weeks.length}`;
+
+
+      /*
+       * ----------------------------------------------------
+       * Aktivace tlačítek
+       * ----------------------------------------------------
+       */
+
+      document.getElementById(
+        "prevWeek"
+      ).disabled =
+
+        currentWeekIndex === 0;
+
+
+      document.getElementById(
+        "nextWeek"
+      ).disabled =
+
+        currentWeekIndex ===
+        weeks.length - 1;
+
+
+      /*
+       * ----------------------------------------------------
+       * Když týden nemá výuku
+       * ----------------------------------------------------
+       */
+
+      if (!days.length) {
+
+        app.innerHTML = `
+
+          <div class="empty">
+
+            V tomto týdnu není žádná výuka.
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      /*
+       * ----------------------------------------------------
+       * Vykreslení všech dnů týdne
        * ----------------------------------------------------
        */
 
       app.innerHTML =
-        schedule
+
+        days
           .map(
             day =>
               renderDay(day)
@@ -767,46 +1356,34 @@
 
     /*
      * ========================================================
-     * VYKRESLENÍ JEDNOHO DNE
+     * VYKRESLENÍ DNE
      * ========================================================
      */
 
     function renderDay(day) {
 
-      /*
-       * Zkopírujeme hodiny, abychom
-       * neměnili původní JSON.
-       */
 
       const classes =
+
         Array.isArray(day.classes)
+
           ? [...day.classes]
+
           : [];
 
 
       /*
-       * ----------------------------------------------------
-       * PŘEDMĚTY SEŘADÍME PODLE ČASU
-       * ----------------------------------------------------
+       * Seřadíme hodiny podle začátku.
        */
 
       classes.sort(
-        (a, b) => {
+        (a, b) =>
 
-          return (
-            timeToMinutes(a.start) -
-            timeToMinutes(b.start)
-          );
+          timeToMinutes(a.start) -
 
-        }
+          timeToMinutes(b.start)
       );
 
-
-      /*
-       * ----------------------------------------------------
-       * DEN
-       * ----------------------------------------------------
-       */
 
       return `
 
@@ -814,6 +1391,7 @@
 
 
           <div class="day-header">
+
 
             <div class="day-name">
 
@@ -833,30 +1411,23 @@
             </div>
 
 
-            ${
-              day.week !== null &&
-              day.week !== undefined
-                ? `
+            <div class="week-number">
 
-                  <div class="week-number">
+              ${escapeHtml(
+                day.week ?? ""
+              )}. týden
 
-                    ${escapeHtml(
-                      day.week
-                    )}. týden
+            </div>
 
-                  </div>
-
-                `
-                : ""
-            }
 
           </div>
 
 
           <div class="schedule">
 
+
             ${
-              classes.length > 0
+              classes.length
 
                 ? classes
                     .map(
@@ -878,6 +1449,7 @@
                 `
             }
 
+
           </div>
 
 
@@ -890,14 +1462,17 @@
 
     /*
      * ========================================================
-     * VYKRESLENÍ JEDNÉ HODINY
+     * VYKRESLENÍ PŘEDMĚTU
      * ========================================================
      */
 
     function renderLesson(lesson) {
 
+
       const color =
+
         lesson.color ||
+
         "#38bdf8";
 
 
@@ -905,13 +1480,15 @@
 
         <article
           class="lesson"
-          style="--lesson-color: ${escapeHtml(color)}"
+          style="
+            --lesson-color:
+            ${escapeHtml(color)}
+          "
         >
 
 
-          <!-- ČAS -->
-
           <div class="lesson-time">
+
 
             <div class="lesson-start">
 
@@ -940,10 +1517,9 @@
                 : ""
             }
 
+
           </div>
 
-
-          <!-- INFORMACE O PŘEDMĚTU -->
 
           <div class="lesson-body">
 
@@ -978,6 +1554,7 @@
 
                   : ""
               }
+
 
             </div>
 
@@ -1121,31 +1698,109 @@
 
     /*
      * ========================================================
-     * PŘEVOD ČASU NA MINUTY
+     * PŘEDCHOZÍ TÝDEN
+     * ========================================================
+     */
+
+    document
+      .getElementById("prevWeek")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (
+            currentWeekIndex <= 0
+          ) {
+
+            return;
+
+          }
+
+
+          currentWeekIndex--;
+
+          renderWeek();
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+        }
+      );
+
+
+    /*
+     * ========================================================
+     * DALŠÍ TÝDEN
+     * ========================================================
+     */
+
+    document
+      .getElementById("nextWeek")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (
+            currentWeekIndex >=
+            weeks.length - 1
+          ) {
+
+            return;
+
+          }
+
+
+          currentWeekIndex++;
+
+          renderWeek();
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+        }
+      );
+
+
+    /*
+     * ========================================================
+     * ČAS → MINUTY
      * ========================================================
      */
 
     function timeToMinutes(time) {
 
+
       if (!time) {
+
         return 9999;
+
       }
 
 
       const match =
+
         String(time).match(
           /^(\d{1,2}):(\d{2})$/
         );
 
 
       if (!match) {
+
         return 9999;
+
       }
 
 
       return (
+
         Number(match[1]) * 60 +
+
         Number(match[2])
+
       );
 
     }
@@ -1153,11 +1808,12 @@
 
     /*
      * ========================================================
-     * OCHRANA PŘED HTML
+     * OCHRANA HTML
      * ========================================================
      */
 
     function escapeHtml(value) {
+
 
       return String(
         value ?? ""
@@ -1199,8 +1855,10 @@
 
     loadSchedule();
 
+
   </script>
 
+
 </body>
+
 </html>
-```
