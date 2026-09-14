@@ -1,163 +1,1138 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Můj Rozvrh - Cloudflare API</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 { text-align: center; color: #2c3e50; }
-        .day-group {
-            margin-top: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        .day-title {
-            background-color: #2c3e50;
-            color: white;
-            padding: 12px 15px;
-            border-radius: 8px 8px 0 0;
-            margin: 0;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .event {
-            background: white;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-        }
-        .event:last-child {
-            border-radius: 0 0 8px 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        .time {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .subject {
-            font-size: 1.15em;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-        .teacher, .room {
-            font-size: 0.9em;
-            color: #555;
-            margin-bottom: 3px;
-        }
-        
-        /* Barevné rozlišení výuky */
-        .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: bold;
-        }
-        .badge-prednaska { background: #d0ebff; color: #1864ab; } /* Modrá */
-        .badge-cviceni { background: #d3f9d8; color: #2b8a3e; }   /* Zelená */
-        .badge-seminar { background: #ffe8cc; color: #d9480f; }   /* Oranžová */
-        .badge-default { background: #f1f3f5; color: #495057; }   /* Šedá */
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rozvrh 1. LF UK</title>
+
+  <style>
+    :root {
+      --navy: #0f172a;
+      --navy-light: #1e293b;
+      --blue: #38bdf8;
+      --blue-dark: #0284c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --green: #16a34a;
+      --orange: #f59e0b;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    header {
+      background: var(--navy);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    }
+
+    .nav {
+      max-width: 1400px;
+      margin: auto;
+      padding: 0 24px;
+      height: 68px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-size: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: var(--blue);
+      color: var(--navy);
+
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .nav-info {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 7px;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    /* =========================
+       TOOLBAR
+    ========================= */
+
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+
+      margin-bottom: 25px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar button {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+
+      border-radius: 9px;
+      padding: 9px 14px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+      transition: .15s;
+    }
+
+    .toolbar button:hover {
+      border-color: var(--blue);
+      color: var(--blue-dark);
+    }
+
+    .toolbar button.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: var(--navy);
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    /* =========================
+       LOADING / ERROR
+    ========================= */
+
+    .loading,
+    .error,
+    .empty {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 40px;
+      text-align: center;
+
+      color: var(--muted);
+    }
+
+    .error {
+      color: #b91c1c;
+      border-color: #fecaca;
+      background: #fff7f7;
+    }
+
+    /* =========================
+       DAY
+    ========================= */
+
+    .day {
+      margin-bottom: 28px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+
+      margin-bottom: 10px;
+    }
+
+    .day-name {
+      font-size: 21px;
+      font-weight: 750;
+    }
+
+    .day-date {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .week-number {
+      margin-left: auto;
+
+      color: var(--muted);
+      font-size: 13px;
+      background: #e2e8f0;
+
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* =========================
+       SCHEDULE
+    ========================= */
+
+    .schedule {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .lesson {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+
+      min-height: 96px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lesson:last-child {
+      border-bottom: none;
+    }
+
+    .lesson-time {
+      padding: 18px 15px;
+
+      border-right: 1px solid var(--border);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      color: var(--muted);
+    }
+
+    .lesson-start {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .lesson-end {
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .lesson-body {
+      padding: 15px 20px;
+
+      border-left: 4px solid var(--lesson-color, var(--blue));
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .lesson-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .lesson-subject {
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .lesson-type {
+      flex-shrink: 0;
+
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+
+      padding: 4px 7px;
+
+      border-radius: 5px;
+
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .lesson-teacher {
+      margin-top: 5px;
+
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .lesson-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      margin-top: 10px;
+    }
+
+    .detail {
+      font-size: 12px;
+
+      background: #f1f5f9;
+      color: #475569;
+
+      padding: 4px 7px;
+      border-radius: 5px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      .nav {
+        padding: 0 15px;
+      }
+
+      .nav-info {
+        display: none;
+      }
+
+      main {
+        padding: 20px 12px 40px;
+      }
+
+      .page-header h1 {
+        font-size: 27px;
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar-left {
+        width: 100%;
+      }
+
+      .toolbar button {
+        flex: 1;
+      }
+
+      .updated {
+        text-align: left;
+      }
+
+      .lesson {
+        grid-template-columns: 78px 1fr;
+      }
+
+      .lesson-time {
+        padding: 14px 10px;
+      }
+
+      .lesson-start {
+        font-size: 16px;
+      }
+
+      .lesson-body {
+        padding: 13px;
+      }
+
+      .lesson-top {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .lesson-subject {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <h1>Můj Rozvrh</h1>
-    <div id="schedule">Načítám data z API...</div>
+<header>
+  <div class="nav">
 
-    <script>
-        // SEM VLOŽ ODKAZ NA SVŮJ CLOUDFLARE WORKER:
-        const API_URL = 'https://TVUJ-WORKER.workers.dev/';
+    <a class="logo" href="#">
+      <span class="logo-mark">1L</span>
+      <span>Rozvrh 1. LF UK</span>
+    </a>
 
-        function calculateEndTime(startTime, durationMinutes) {
-            if (!startTime || !durationMinutes) return '';
-            const [hours, minutes] = startTime.split(':').map(Number);
-            const totalMinutes = hours * 60 + minutes + durationMinutes;
-            const endHours = Math.floor(totalMinutes / 60);
-            const endMinutes = totalMinutes % 60;
-            return `${endHours}:${endMinutes.toString().padStart(2, '0')}`;
+    <div class="nav-info">
+      1. ročník · 1.LEK-a/1003
+    </div>
+
+  </div>
+</header>
+
+
+<main>
+
+  <div class="page-header">
+
+    <h1>Můj rozvrh</h1>
+
+    <p>
+      1. LF Univerzity Karlovy · Všechny předměty
+    </p>
+
+  </div>
+
+
+  <div class="toolbar">
+
+    <div class="toolbar-left">
+
+      <button
+        id="prevWeek"
+        type="button">
+        ← Předchozí týden
+      </button>
+
+      <button
+        id="today"
+        type="button"
+        class="active">
+        Aktuální
+      </button>
+
+      <button
+        id="nextWeek"
+        type="button">
+        Další týden →
+      </button>
+
+    </div>
+
+    <div
+      id="updated"
+      class="updated">
+      Načítám rozvrh...
+    </div>
+
+  </div>
+
+
+  <div id="app">
+
+    <div class="loading">
+      Načítám rozvrh...
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+  // =========================================================
+  // URL TVÉHO CLOUDFLARE WORKERU
+  // =========================================================
+
+  const WORKER_URL =
+    "https://pytle.warezovaadresa.workers.dev/";
+
+
+  // =========================================================
+  // DATA
+  // =========================================================
+
+  let schedule = [];
+
+  let currentWeek = null;
+
+  let weeks = [];
+
+  let currentWeekIndex = 0;
+
+
+  // =========================================================
+  // NAČTENÍ JSON
+  // =========================================================
+
+  async function loadSchedule() {
+
+    const app =
+      document.getElementById("app");
+
+    try {
+
+      app.innerHTML = `
+        <div class="loading">
+          Načítám rozvrh...
+        </div>
+      `;
+
+
+      const response =
+        await fetch(
+          WORKER_URL,
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+      }
+
+
+      const data =
+        await response.json();
+
+
+      schedule =
+        Array.isArray(data.days)
+          ? data.days
+          : [];
+
+
+      // -------------------------------------------------------
+      // TÝDNY
+      // -------------------------------------------------------
+
+      weeks = [
+        ...new Set(
+          schedule
+            .map(day => day.week)
+            .filter(
+              week =>
+                week !== null &&
+                week !== undefined
+            )
+        )
+      ].sort(
+        (a, b) => a - b
+      );
+
+
+      // -------------------------------------------------------
+      // NAJDI AKTUÁLNÍ TÝDEN
+      // -------------------------------------------------------
+
+      const today =
+        new Date();
+
+
+      const todayString =
+        `${today.getDate()}.${today.getMonth() + 1}.`;
+
+
+      const todayDay =
+        schedule.find(
+          day =>
+            day.date === todayString
+        );
+
+
+      if (todayDay) {
+
+        currentWeek =
+          todayDay.week;
+
+      } else {
+
+        currentWeek =
+          weeks[0] ?? null;
+      }
+
+
+      currentWeekIndex =
+        Math.max(
+          0,
+          weeks.indexOf(
+            currentWeek
+          )
+        );
+
+
+      render();
+
+
+      // -------------------------------------------------------
+      // ČAS AKTUALIZACE
+      // -------------------------------------------------------
+
+      if (data.generatedAt) {
+
+        const generated =
+          new Date(
+            data.generatedAt
+          );
+
+
+        document.getElementById(
+          "updated"
+        ).textContent =
+          "Data ze SIS: " +
+          generated.toLocaleString(
+            "cs-CZ",
+            {
+              day: "2-digit",
+              month: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit"
+            }
+          );
+      }
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      app.innerHTML = `
+        <div class="error">
+          <strong>Nepodařilo se načíst rozvrh.</strong>
+          <br><br>
+          ${escapeHtml(error.message)}
+        </div>
+      `;
+
+
+      document.getElementById(
+        "updated"
+      ).textContent =
+        "Chyba při načítání";
+    }
+  }
+
+
+  // =========================================================
+  // VYKRESLENÍ
+  // =========================================================
+
+  function render() {
+
+    const app =
+      document.getElementById("app");
+
+
+    if (
+      !schedule.length
+    ) {
+
+      app.innerHTML = `
+        <div class="empty">
+          Rozvrh neobsahuje žádné předměty.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    let visibleDays =
+      schedule;
+
+
+    // -------------------------------------------------------
+    // FILTR PODLE TÝDNE
+    // -------------------------------------------------------
+
+    if (
+      currentWeek !== null
+    ) {
+
+      visibleDays =
+        schedule.filter(
+          day =>
+            day.week === currentWeek
+        );
+    }
+
+
+    // -------------------------------------------------------
+    // KDYŽ TÝDEN NENÍ
+    // -------------------------------------------------------
+
+    if (
+      !visibleDays.length
+    ) {
+
+      app.innerHTML = `
+        <div class="empty">
+          Pro tento týden není žádná výuka.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    // -------------------------------------------------------
+    // VYKRESLENÍ DNŮ
+    // -------------------------------------------------------
+
+    app.innerHTML =
+      visibleDays
+        .map(
+          day =>
+            renderDay(day)
+        )
+        .join("");
+  }
+
+
+  // =========================================================
+  // DEN
+  // =========================================================
+
+  function renderDay(day) {
+
+    const classes =
+      Array.isArray(day.classes)
+        ? [...day.classes]
+        : [];
+
+
+    // -------------------------------------------------------
+    // PŘEDMĚTY SEŘADIT PODLE ČASU
+    // -------------------------------------------------------
+
+    classes.sort(
+      (a, b) =>
+        timeToMinutes(a.start) -
+        timeToMinutes(b.start)
+    );
+
+
+    return `
+
+      <section class="day">
+
+        <div class="day-header">
+
+          <div class="day-name">
+            ${escapeHtml(day.day)}
+          </div>
+
+          <div class="day-date">
+            ${escapeHtml(day.date || "")}
+          </div>
+
+          ${
+            day.week
+              ? `
+                <div class="week-number">
+                  ${day.week}. týden
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <div class="schedule">
+
+          ${
+            classes
+              .map(
+                lesson =>
+                  renderLesson(
+                    lesson
+                  )
+              )
+              .join("")
+          }
+
+        </div>
+
+      </section>
+
+    `;
+  }
+
+
+  // =========================================================
+  // PŘEDMĚT
+  // =========================================================
+
+  function renderLesson(lesson) {
+
+    const color =
+      lesson.color ||
+      "#38bdf8";
+
+
+    return `
+
+      <article
+        class="lesson"
+        style="--lesson-color: ${escapeHtml(color)}"
+      >
+
+        <div class="lesson-time">
+
+          <div class="lesson-start">
+            ${escapeHtml(
+              lesson.start || "?"
+            )}
+          </div>
+
+          ${
+            lesson.end
+              ? `
+                <div class="lesson-end">
+                  ${escapeHtml(
+                    lesson.end
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <div class="lesson-body">
+
+          <div class="lesson-top">
+
+            <div class="lesson-subject">
+              ${escapeHtml(
+                lesson.subject ||
+                "Neznámý předmět"
+              )}
+            </div>
+
+            ${
+              lesson.type
+                ? `
+                  <div class="lesson-type">
+                    ${escapeHtml(
+                      lesson.type
+                    )}
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+
+          ${
+            lesson.teacher
+              ? `
+                <div class="lesson-teacher">
+                  ${escapeHtml(
+                    lesson.teacher
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+
+          <div class="lesson-details">
+
+            ${
+              lesson.room
+                ? `
+                  <span class="detail">
+                    Místnost ${escapeHtml(
+                      lesson.room
+                    )}
+                  </span>
+                `
+                : ""
+            }
+
+
+            ${
+              lesson.course
+                ? `
+                  <span class="detail">
+                    ${escapeHtml(
+                      lesson.course
+                    )}
+                  </span>
+                `
+                : ""
+            }
+
+
+            ${
+              lesson.durationMinutes
+                ? `
+                  <span class="detail">
+                    ${lesson.durationMinutes} min
+                  </span>
+                `
+                : ""
+            }
+
+
+            ${
+              lesson.weekRange
+                ? `
+                  <span class="detail">
+                    ${lesson.weekRange.from}.
+                    –
+                    ${lesson.weekRange.to}.
+                    týden
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+  }
+
+
+  // =========================================================
+  // OVLÁDÁNÍ TÝDNŮ
+  // =========================================================
+
+  document
+    .getElementById("prevWeek")
+    .addEventListener(
+      "click",
+      () => {
+
+        if (
+          currentWeekIndex <= 0
+        ) {
+          return;
         }
 
-        // Pomocná funkce pro přiřazení barvy podle typu výuky
-        function getBadgeClass(type) {
-            const t = type.toLowerCase();
-            if (t.includes('přednáška')) return 'badge-prednaska';
-            if (t.includes('cvičení')) return 'badge-cviceni';
-            if (t.includes('seminář')) return 'badge-seminar';
-            return 'badge-default';
+
+        currentWeekIndex--;
+
+        currentWeek =
+          weeks[
+            currentWeekIndex
+          ];
+
+        render();
+      }
+    );
+
+
+  document
+    .getElementById("nextWeek")
+    .addEventListener(
+      "click",
+      () => {
+
+        if (
+          currentWeekIndex >=
+          weeks.length - 1
+        ) {
+          return;
         }
 
-        const dayOrder = { "Po": 1, "Út": 2, "St": 3, "Čt": 4, "Pá": 5, "So": 6, "Ne": 7 };
 
-        fetch(API_URL)
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('schedule');
-                container.innerHTML = ''; 
+        currentWeekIndex++;
 
-                if (!data.success || !data.schedule || data.schedule.length === 0) {
-                    container.innerHTML = '<p>Zatím žádná data nebo nastala chyba.</p>';
-                    return;
-                }
+        currentWeek =
+          weeks[
+            currentWeekIndex
+          ];
 
-                const eventsByDay = {};
-                data.schedule.forEach(event => {
-                    const day = event.day || 'Neznámý den';
-                    if (!eventsByDay[day]) eventsByDay[day] = [];
-                    eventsByDay[day].push(event);
-                });
+        render();
+      }
+    );
 
-                const sortedDays = Object.keys(eventsByDay).sort((a, b) => (dayOrder[a] || 99) - (dayOrder[b] || 99));
 
-                sortedDays.forEach(day => {
-                    eventsByDay[day].sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+  document
+    .getElementById("today")
+    .addEventListener(
+      "click",
+      () => {
 
-                    const dayDiv = document.createElement('div');
-                    dayDiv.className = 'day-group';
-                    
-                    const dayTitle = document.createElement('h2');
-                    dayTitle.className = 'day-title';
-                    dayTitle.innerText = day;
-                    dayDiv.appendChild(dayTitle);
+        const today =
+          new Date();
 
-                    eventsByDay[day].forEach(event => {
-                        const endTime = calculateEndTime(event.time, event.duration);
-                        const timeString = event.time ? `${event.time} - ${endTime}` : 'Čas neurčen';
-                        const badgeClass = getBadgeClass(event.type);
-                        
-                        const eventDiv = document.createElement('div');
-                        eventDiv.className = 'event';
-                        eventDiv.innerHTML = `
-                            <div class="time">
-                                <span>🕒 ${timeString}</span>
-                                <span class="badge ${badgeClass}">${event.type}</span>
-                            </div>
-                            <div class="subject">${event.subject}</div>
-                            <div class="room">📍 ${event.room || 'Místnost neuvedena'}</div>
-                            <div class="teacher">👤 ${event.teacher || 'Vyučující neuveden'}</div>
-                        `;
-                        dayDiv.appendChild(eventDiv);
-                    });
 
-                    container.appendChild(dayDiv);
-                });
-            })
-            .catch(error => {
-                document.getElementById('schedule').innerHTML = `<p style="color:red;">Nepodařilo se připojit k API. Zkontroluj URL v kódu.</p>`;
-                console.error(error);
-            });
-    </script>
+        const todayString =
+          `${today.getDate()}.${today.getMonth() + 1}.`;
+
+
+        const todayDay =
+          schedule.find(
+            day =>
+              day.date === todayString
+          );
+
+
+        if (todayDay) {
+
+          currentWeek =
+            todayDay.week;
+
+          currentWeekIndex =
+            weeks.indexOf(
+              currentWeek
+            );
+
+          render();
+
+        } else {
+
+          currentWeekIndex = 0;
+
+          currentWeek =
+            weeks[0] ?? null;
+
+          render();
+        }
+      }
+    );
+
+
+  // =========================================================
+  // TIME -> MINUTES
+  // =========================================================
+
+  function timeToMinutes(
+    time
+  ) {
+
+    if (!time) {
+      return 9999;
+    }
+
+
+    const match =
+      time.match(
+        /^(\d{1,2}):(\d{2})$/
+      );
+
+
+    if (!match) {
+      return 9999;
+    }
+
+
+    return (
+      Number(match[1]) * 60 +
+      Number(match[2])
+    );
+  }
+
+
+  // =========================================================
+  // OCHRANA HTML
+  // =========================================================
+
+  function escapeHtml(
+    value
+  ) {
+
+    return String(
+      value ?? ""
+    )
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+  }
+
+
+  // =========================================================
+  // START
+  // =========================================================
+
+  loadSchedule();
+
+</script>
+
 </body>
 </html>
