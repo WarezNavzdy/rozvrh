@@ -1,31 +1,26 @@
 import json
 import traceback
-import requests
-import urllib.parse
+import os
 from icalendar import Calendar
 from datetime import datetime
 
-# Tvůj funkční ScraperAPI klíč
-API_KEY = "5def1e9cd2bbc227e56f10ec4fd067a4"
+# Název tvého souboru, který jsi nahrál na GitHub
+ICS_FILE = "muj_rozvrh.ics"
 
-# Tvůj správný odkaz na ICS
-TARGET_URL = "https://is.cuni.cz/studium/rozvrhng/roz_student_micro.php?id=5f9a0f7350690e69e32bfbe856b89fc5&tid=&zobraz=1&b=1&kruh=1003&skr=2026&sem=1&fak=11110&ical=1"
+def parse_local_ics():
+    # Kontrola, jestli jsi soubor nahrál správně
+    if not os.path.exists(ICS_FILE):
+        return {"error": f"Soubor '{ICS_FILE}' nebyl v repozitáři nalezen."}
 
-# Zabalíme tvůj odkaz do maskovací služby
-PROXY_URL = f"http://api.scraperapi.com/?api_key={API_KEY}&url={urllib.parse.quote(TARGET_URL)}"
-
-def parse_ics():
-    # Stáhneme to přes prostředníka (timeout dáme delší, proxy může chvilku trvat)
-    response = requests.get(PROXY_URL, timeout=45)
-    response.raise_for_status() 
-    
-    cal = Calendar.from_ical(response.content)
+    # Načtení a parsování lokálního souboru
+    with open(ICS_FILE, "rb") as f:
+        cal = Calendar.from_ical(f.read())
+        
     events = []
     
     for component in cal.walk('vevent'):
         summary = str(component.get('summary', ''))
         location = str(component.get('location', ''))
-        
         dtstart = component.get('dtstart')
         dtend = component.get('dtend')
         
@@ -39,27 +34,25 @@ def parse_ics():
             "konec": end_iso
         })
         
+    # Seřadíme podle času
     events.sort(key=lambda x: x["zacatek"] if x["zacatek"] else "")
     
     return {
         "_meta": {
             "cas_aktualizace": datetime.now().isoformat(),
             "pocet_hodin": len(events),
-            "zdroj": "ICS přes ScraperAPI"
+            "zdroj": "Lokální ICS soubor"
         },
         "data": events
     }
 
 if __name__ == "__main__":
     try:
-        vysledek = parse_ics()
+        vysledek = parse_local_ics()
     except Exception as e:
-        vysledek = {
-            "error": str(e),
-            "traceback": traceback.format_exc()
-        }
+        vysledek = {"error": str(e), "traceback": traceback.format_exc()}
         
     with open("rozvrh.json", "w", encoding="utf-8") as f:
         json.dump(vysledek, f, ensure_ascii=False, indent=4)
         
-    print("Skript dokončen.")
+    print("Hotovo! Lokální ICS převeden na JSON.")
