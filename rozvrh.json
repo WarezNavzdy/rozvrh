@@ -1,1 +1,23 @@
-[]
+{
+    "_debug": {
+        "cas_spusteni": "2026-09-14T20:27:53.115121",
+        "kroky": [
+            {
+                "akce": "prihlaseni",
+                "status_code": 200,
+                "url_po_presmerovani": "https://is.cuni.cz/studium/login.php?do=anonym",
+                "cookies": {
+                    "PHPSESSID": "3ccf46de8ac5d161f2a0492dd7a09733"
+                }
+            },
+            {
+                "akce": "stazeni_rozvrhu",
+                "status_code": 200,
+                "url_po_presmerovani": "https://is.cuni.cz/studium/login.php",
+                "titulek_stranky": "Studijní informační systém - Univerzita Karlova"
+            }
+        ]
+    },
+    "pocet_polozek": 0,
+    "data": []
+}
