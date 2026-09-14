@@ -1,0 +1,32 @@
+name: Auto Update Rozvrh JSON
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Spustí se každý den ve 3:00 UTC
+  workflow_dispatch: # Přidá tlačítko pro ruční spuštění
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stáhnout kód z repozitáře
+        uses: actions/checkout@v4
+
+      - name: Nastavit Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Nainstalovat závislosti
+        run: pip install -r requirements.txt
+
+      - name: Spustit scraper
+        run: python parse.py
+
+      - name: Uložit změněný JSON do repozitáře
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add rozvrh.json
+          git commit -m "Auto-update rozvrhu [skip ci]" || exit 0
+          git push
