@@ -5,46 +5,36 @@ from bs4 import BeautifulSoup
 URL = "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P"
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept-Language": "cs,en;q=0.9",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "cs-CZ,cs;q=0.9,en;q=0.8",
 }
 
 
 def get_schedule():
     try:
-        response = requests.get(URL, headers=headers, timeout=15)
+        response = requests.get(URL, headers=headers, timeout=20)
         response.encoding = "utf-8"
 
-        if response.status_code != 200:
-            print(f"Chyba při stahování HTML: Status code {response.status_code}")
-            return []
-
         soup = BeautifulSoup(response.text, "html.parser")
-        events = []
+        output = []
 
-        # Najdeme všechny tabulky na stránce
-        tables = soup.find_all("table")
+        # 1. Vyhledání všech odkazu a textu v rozvrhu
+        cells = soup.find_all(["td", "th", "div"])
+        for cell in cells:
+            text = cell.get_text(strip=True)
+            if text and len(text) > 3:
+                output.append(text)
 
-        for table in tables:
-            rows = table.find_all("tr")
-            for row in rows:
-                cols = row.find_all(["td", "th"])
-                row_data = []
+        # Pokud skript nic nenašel, uloží alespoň titulek stránky a část HTML pro diagnózu
+        if not output:
+            title = soup.title.string if soup.title else "Bez titulku"
+            return [{"status": "Nenalezena data", "page_title": title, "body_sample": soup.get_text()[:300]}]
 
-                for col in cols:
-                    text = col.get_text(separator=" ", strip=True)
-                    if text:
-                        row_data.append(text)
-
-                # Pokud řádek obsahuje smysluplná data, uložíme ho
-                if len(row_data) > 1:
-                    events.append({"riadok": row_data})
-
-        return events
+        return output[:100]  # Vráti prvních 100 zachycených prvků
 
     except Exception as e:
-        print(f"Chyba skriptu: {e}")
-        return []
+        return [{"error": str(e)}]
 
 
 if __name__ == "__main__":
@@ -52,5 +42,3 @@ if __name__ == "__main__":
 
     with open("rozvrh.json", "w", encoding="utf-8") as f:
         json.dump(schedule_data, f, ensure_ascii=False, indent=4)
-
-    print(f"Hotovo! Vyextrahováno {len(schedule_data)} položek do rozvrh.json.")
