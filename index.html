@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Můj Rozvrh</title>
+    <title>Můj Rozvrh - Cloudflare API</title>
     <style>
-        /* Moderní, jednoduchý vzhled pro mobily i PC */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f4f9;
@@ -14,10 +13,7 @@
             margin: 0 auto;
             padding: 20px;
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-        }
+        h1 { text-align: center; color: #2c3e50; }
         .day-group {
             margin-top: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -29,8 +25,8 @@
             padding: 12px 15px;
             border-radius: 8px 8px 0 0;
             margin: 0;
-            font-size: 1.1em;
-            text-transform: capitalize;
+            font-size: 1.2em;
+            font-weight: bold;
         }
         .event {
             background: white;
@@ -45,78 +41,89 @@
         }
         .time {
             font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 5px;
+            color: #333;
+            margin-bottom: 8px;
             font-size: 0.95em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .subject {
             font-size: 1.15em;
-            font-weight: 500;
-            margin-bottom: 5px;
+            font-weight: bold;
+            margin-bottom: 6px;
         }
-        .room {
+        .teacher, .room {
             font-size: 0.9em;
-            color: #7f8c8d;
+            color: #555;
+            margin-bottom: 3px;
         }
-        .meta {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.8em;
-            color: #aaa;
+        
+        /* Barevné rozlišení výuky */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
         }
+        .badge-prednaska { background: #d0ebff; color: #1864ab; } /* Modrá */
+        .badge-cviceni { background: #d3f9d8; color: #2b8a3e; }   /* Zelená */
+        .badge-seminar { background: #ffe8cc; color: #d9480f; }   /* Oranžová */
+        .badge-default { background: #f1f3f5; color: #495057; }   /* Šedá */
     </style>
 </head>
 <body>
 
     <h1>Můj Rozvrh</h1>
-    <div id="schedule">Načítám data...</div>
-    <div class="meta" id="meta-info"></div>
+    <div id="schedule">Načítám data z API...</div>
 
     <script>
-        // Nástroje pro převedení času do češtiny
-        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const timeOptions = { hour: '2-digit', minute: '2-digit' };
+        // SEM VLOŽ ODKAZ NA SVŮJ CLOUDFLARE WORKER:
+        const API_URL = 'https://TVUJ-WORKER.workers.dev/';
 
-        // Načteme JSON ze stejné složky
-        fetch('rozvrh.json')
+        function calculateEndTime(startTime, durationMinutes) {
+            if (!startTime || !durationMinutes) return '';
+            const [hours, minutes] = startTime.split(':').map(Number);
+            const totalMinutes = hours * 60 + minutes + durationMinutes;
+            const endHours = Math.floor(totalMinutes / 60);
+            const endMinutes = totalMinutes % 60;
+            return `${endHours}:${endMinutes.toString().padStart(2, '0')}`;
+        }
+
+        // Pomocná funkce pro přiřazení barvy podle typu výuky
+        function getBadgeClass(type) {
+            const t = type.toLowerCase();
+            if (t.includes('přednáška')) return 'badge-prednaska';
+            if (t.includes('cvičení')) return 'badge-cviceni';
+            if (t.includes('seminář')) return 'badge-seminar';
+            return 'badge-default';
+        }
+
+        const dayOrder = { "Po": 1, "Út": 2, "St": 3, "Čt": 4, "Pá": 5, "So": 6, "Ne": 7 };
+
+        fetch(API_URL)
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('schedule');
-                container.innerHTML = ''; // Smažeme "Načítám data..."
+                container.innerHTML = ''; 
 
-                if (data.error) {
-                    container.innerHTML = `<p style="color:red;">Chyba skriptu: ${data.error}</p>`;
+                if (!data.success || !data.schedule || data.schedule.length === 0) {
+                    container.innerHTML = '<p>Zatím žádná data nebo nastala chyba.</p>';
                     return;
                 }
 
-                if (!data.data || data.data.length === 0) {
-                    container.innerHTML = '<p>Žádné hodiny nenalezeny.</p>';
-                    return;
-                }
-
-                // Výpis spodních meta informací
-                if (data._meta) {
-                    const updateTime = new Date(data._meta.cas_aktualizace).toLocaleString('cs-CZ');
-                    document.getElementById('meta-info').innerText = `Aktualizováno: ${updateTime}`;
-                }
-
-                // Seskupení událostí do jednotlivých dnů
                 const eventsByDay = {};
-                
-                data.data.forEach(event => {
-                    if (!event.zacatek) return;
-                    
-                    const startDate = new Date(event.zacatek);
-                    const dayString = startDate.toLocaleDateString('cs-CZ', dateOptions);
-                    
-                    if (!eventsByDay[dayString]) {
-                        eventsByDay[dayString] = [];
-                    }
-                    eventsByDay[dayString].push(event);
+                data.schedule.forEach(event => {
+                    const day = event.day || 'Neznámý den';
+                    if (!eventsByDay[day]) eventsByDay[day] = [];
+                    eventsByDay[day].push(event);
                 });
 
-                // Vykreslení HTML pro každý den a hodinu
-                for (const [day, events] of Object.entries(eventsByDay)) {
+                const sortedDays = Object.keys(eventsByDay).sort((a, b) => (dayOrder[a] || 99) - (dayOrder[b] || 99));
+
+                sortedDays.forEach(day => {
+                    eventsByDay[day].sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
                     const dayDiv = document.createElement('div');
                     dayDiv.className = 'day-group';
                     
@@ -125,25 +132,30 @@
                     dayTitle.innerText = day;
                     dayDiv.appendChild(dayTitle);
 
-                    events.forEach(event => {
-                        const start = new Date(event.zacatek).toLocaleTimeString('cs-CZ', timeOptions);
-                        const end = event.konec ? new Date(event.konec).toLocaleTimeString('cs-CZ', timeOptions) : '';
+                    eventsByDay[day].forEach(event => {
+                        const endTime = calculateEndTime(event.time, event.duration);
+                        const timeString = event.time ? `${event.time} - ${endTime}` : 'Čas neurčen';
+                        const badgeClass = getBadgeClass(event.type);
                         
                         const eventDiv = document.createElement('div');
                         eventDiv.className = 'event';
                         eventDiv.innerHTML = `
-                            <div class="time">${start} - ${end}</div>
-                            <div class="subject">${event.predmet}</div>
-                            <div class="room">📍 ${event.mistnost || 'Místnost neuvedena'}</div>
+                            <div class="time">
+                                <span>🕒 ${timeString}</span>
+                                <span class="badge ${badgeClass}">${event.type}</span>
+                            </div>
+                            <div class="subject">${event.subject}</div>
+                            <div class="room">📍 ${event.room || 'Místnost neuvedena'}</div>
+                            <div class="teacher">👤 ${event.teacher || 'Vyučující neuveden'}</div>
                         `;
                         dayDiv.appendChild(eventDiv);
                     });
 
                     container.appendChild(dayDiv);
-                }
+                });
             })
             .catch(error => {
-                document.getElementById('schedule').innerHTML = `<p style="color:red;">Nepodařilo se načíst data z rozvrh.json</p>`;
+                document.getElementById('schedule').innerHTML = `<p style="color:red;">Nepodařilo se připojit k API. Zkontroluj URL v kódu.</p>`;
                 console.error(error);
             });
     </script>
