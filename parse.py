@@ -29,6 +29,7 @@ def get_schedule():
         if not title:
             continue
 
+        # Opravený zápis
         lines = cell.get_text(separator="\n").split("\n")
         text_lines = [line.strip() for line in lines if line.strip()]
 
