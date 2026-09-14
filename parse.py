@@ -2,8 +2,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P"
-BASE_URL = "https://is.cuni.cz/studium/rozvrhng/"
+SCHEDULE_URL = "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P"
+ANONYM_URL = "https://is.cuni.cz/studium/login.php?do=anonym"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -16,34 +16,34 @@ def get_schedule():
     session.headers.update(headers)
     
     try:
-        # 1. Nejprve navštívíme základní rozhraní rozvrhu, abychom dostali relaci (cookies)
-        session.get(BASE_URL, timeout=15)
+        # 1. Aktivujeme anonymní relaci v SISu
+        session.get(ANONYM_URL, timeout=15)
         
-        # 2. Stáhneme konkrétní rozvrh se všemi cookies
-        response = session.get(URL, timeout=15)
+        # 2. Načteme stránku s rozvrhem
+        response = session.get(SCHEDULE_URL, timeout=15)
         response.encoding = "utf-8"
 
         soup = BeautifulSoup(response.text, "html.parser")
         events = []
 
-        # Hledáme políčka s rozvrhem (podle CSS tříd nebo struktur tabulky)
-        schedule_cells = soup.find_all(["td", "div"], class_=lambda c: c and "rozvrh" in c)
+        # Najdeme všechny akce rozvrhu
+        schedule_cells = soup.find_all(["td", "div"], class_=lambda c: c and ("rozvrh" in c or "akce" in c))
 
         for cell in schedule_cells:
-            text = cell.get_text(separator=" | ", strip=True)
-            if text:
+            text = cell.get_text(separator=" ", strip=True)
+            if text and len(text) > 2:
                 events.append({
-                    "text": text,
-                    "info": cell.get("title", "")
+                    "predmet": text,
+                    "detail": cell.get("title", "")
                 })
 
-        # Pokud CSS třídy nesedí, zkusíme vyextrahovat všechny tabulkové buňky
+        # Záložní metoda: parsování jakékoliv tabulky s daty
         if not events:
             rows = soup.find_all("tr")
             for row in rows:
                 cols = [c.get_text(separator=" ", strip=True) for c in row.find_all(["td", "th"]) if c.get_text(strip=True)]
                 if len(cols) > 1:
-                    events.append({"riadok": cols})
+                    events.append({"radek": cols})
 
         return events
 
