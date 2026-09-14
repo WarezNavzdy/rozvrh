@@ -8,21 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Stáhni SIS stránku
+      - name: Stáhni SIS
         run: |
           curl -L \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" \
+            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
+            -H "Accept-Language: cs-CZ,cs;q=0.9,en;q=0.8" \
             "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P" \
             -o rozvrh.html
 
-      - name: Zkontroluj soubor
+      - name: Kontrola
         run: |
-          echo "Velikost souboru:"
+          echo "Velikost:"
           wc -c rozvrh.html
           echo ""
-          echo "Začátek souboru:"
-          head -30 rozvrh.html
+          echo "Obsah:"
+          head -50 rozvrh.html
 
-      - name: Nahraj HTML jako artifact
+      - name: Ulož HTML
         uses: actions/upload-artifact@v4
         with:
           name: rozvrh-html
