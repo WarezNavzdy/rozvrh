@@ -13,7 +13,7 @@ headers = {
 def get_schedule():
     # 1. Stažení HTML obsahu
     response = requests.get(URL, headers=headers)
-    response.encoding = "utf-8"  # Nastavení kódování pro správnou češtinu
+    response.encoding = "utf-8"  # Správné kódování pro češtinu
 
     if response.status_code != 200:
         print(f"Chyba při stahování: Status code {response.status_code}")
@@ -23,26 +23,22 @@ def get_schedule():
     soup = BeautifulSoup(response.text, "html.parser")
     events = []
 
-    # 3. Vyhledání buněk rozvrhu (IS UK používá pro políčka akcí třídu 'rozvrh_akce')
+    # 3. Vyhledání buněk rozvrhu
     schedule_cells = soup.find_all(["td", "div"], class_="rozvrh_akce")
 
     for cell in schedule_cells:
-        # Extrakce názvu předmětu (bývá v odkazu nebo divu s názvem)
+        # Extrakce názvu předmětu
         title_el = cell.find("a") or cell.find("b")
         title = title_el.get_text(strip=True) if title_el else ""
 
-        # Pokud jsme nenašli název, přeskočíme prázdnou buňku
         if not title:
             continue
 
-        # Získání celého textu z buňky pro další detaily
-        text_lines = [
-            line.strip()
-            for line.strip() in cell.get_text(separator="\n").split("\n")
-            if line.strip()
-        ]
+        # Získání čistých řádků textu (ZDE BYLA CHYBA - OPRAVENO)
+        lines = cell.get_text(separator="\n").split("\n")
+        text_lines = [line.strip() for line in lines if line.strip()]
 
-        # Extrakce z tooltipu/atributu 'title', kde IS UK často schovává kompletní detaily
+        # Extrakce atributu 'title' (tooltip)
         tooltip_info = cell.get("title", "")
 
         event_data = {
