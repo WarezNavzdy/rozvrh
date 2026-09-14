@@ -22,27 +22,23 @@ def get_schedule():
         soup = BeautifulSoup(response.text, "html.parser")
         events = []
 
-        schedule_cells = soup.find_all(["td", "div"], class_="rozvrh_akce")
+        # Najdeme všechny tabulky na stránce
+        tables = soup.find_all("table")
 
-        for cell in schedule_cells:
-            title_el = cell.find("a") or cell.find("b")
-            title = title_el.get_text(strip=True) if title_el else ""
+        for table in tables:
+            rows = table.find_all("tr")
+            for row in rows:
+                cols = row.find_all(["td", "th"])
+                row_data = []
 
-            if not title:
-                continue
+                for col in cols:
+                    text = col.get_text(separator=" ", strip=True)
+                    if text:
+                        row_data.append(text)
 
-            lines = cell.get_text(separator="\n").split("\n")
-            text_lines = [line.strip() for line in lines if line.strip()]
-
-            tooltip_info = cell.get("title", "")
-
-            event_data = {
-                "predmet": title,
-                "raw_detaily": text_lines,
-                "tooltip": tooltip_info,
-            }
-
-            events.append(event_data)
+                # Pokud řádek obsahuje smysluplná data, uložíme ho
+                if len(row_data) > 1:
+                    events.append({"riadok": row_data})
 
         return events
 
@@ -57,4 +53,4 @@ if __name__ == "__main__":
     with open("rozvrh.json", "w", encoding="utf-8") as f:
         json.dump(schedule_data, f, ensure_ascii=False, indent=4)
 
-    print(f"Hotovo! Vyextrahováno {len(schedule_data)} událostí do rozvrh.json.")
+    print(f"Hotovo! Vyextrahováno {len(schedule_data)} položek do rozvrh.json.")
