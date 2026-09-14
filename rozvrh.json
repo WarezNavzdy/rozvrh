@@ -1,19 +1,21 @@
 {
     "_debug": {
-        "cas_spusteni": "2026-09-14T20:30:16.373162",
+        "cas_spusteni": "2026-09-14T20:32:55.896546",
         "kroky": [
             {
-                "akce": "nacteni_login_stranky",
-                "status_code": 200
+                "akce": "anonymni_prihlaseni",
+                "status_code": 200,
+                "url": "https://is.cuni.cz/studium/login.php?do=anonym"
             },
             {
-                "akce": "chyba",
-                "detail": "Nenalezen odkaz pro anonymni prihlaseni."
+                "akce": "otevreni_modulu_rozvrh",
+                "status_code": 200,
+                "url": "https://is.cuni.cz/studium/login.php"
             },
             {
                 "akce": "stazeni_rozvrhu",
                 "status_code": 200,
-                "vysledna_url": "https://is.cuni.cz/studium/login.php"
+                "url": "https://is.cuni.cz/studium/login.php"
             }
         ]
     },
