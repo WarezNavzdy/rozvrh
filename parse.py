@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 URL = "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P"
+BASE_URL = "https://is.cuni.cz/studium/rozvrhng/"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -10,32 +11,44 @@ headers = {
     "Accept-Language": "cs-CZ,cs;q=0.9,en;q=0.8",
 }
 
-
 def get_schedule():
+    session = requests.Session()
+    session.headers.update(headers)
+    
     try:
-        response = requests.get(URL, headers=headers, timeout=20)
+        # 1. Nejprve navštívíme základní rozhraní rozvrhu, abychom dostali relaci (cookies)
+        session.get(BASE_URL, timeout=15)
+        
+        # 2. Stáhneme konkrétní rozvrh se všemi cookies
+        response = session.get(URL, timeout=15)
         response.encoding = "utf-8"
 
         soup = BeautifulSoup(response.text, "html.parser")
-        output = []
+        events = []
 
-        # 1. Vyhledání všech odkazu a textu v rozvrhu
-        cells = soup.find_all(["td", "th", "div"])
-        for cell in cells:
-            text = cell.get_text(strip=True)
-            if text and len(text) > 3:
-                output.append(text)
+        # Hledáme políčka s rozvrhem (podle CSS tříd nebo struktur tabulky)
+        schedule_cells = soup.find_all(["td", "div"], class_=lambda c: c and "rozvrh" in c)
 
-        # Pokud skript nic nenašel, uloží alespoň titulek stránky a část HTML pro diagnózu
-        if not output:
-            title = soup.title.string if soup.title else "Bez titulku"
-            return [{"status": "Nenalezena data", "page_title": title, "body_sample": soup.get_text()[:300]}]
+        for cell in schedule_cells:
+            text = cell.get_text(separator=" | ", strip=True)
+            if text:
+                events.append({
+                    "text": text,
+                    "info": cell.get("title", "")
+                })
 
-        return output[:100]  # Vráti prvních 100 zachycených prvků
+        # Pokud CSS třídy nesedí, zkusíme vyextrahovat všechny tabulkové buňky
+        if not events:
+            rows = soup.find_all("tr")
+            for row in rows:
+                cols = [c.get_text(separator=" ", strip=True) for c in row.find_all(["td", "th"]) if c.get_text(strip=True)]
+                if len(cols) > 1:
+                    events.append({"riadok": cols})
+
+        return events
 
     except Exception as e:
         return [{"error": str(e)}]
-
 
 if __name__ == "__main__":
     schedule_data = get_schedule()
