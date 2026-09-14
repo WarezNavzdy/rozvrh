@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -12,13 +13,14 @@
       --navy-light: #1e293b;
       --blue: #38bdf8;
       --blue-dark: #0284c7;
+
       --bg: #f1f5f9;
       --card: #ffffff;
+
       --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
-      --green: #16a34a;
-      --orange: #f59e0b;
+
       --radius: 14px;
     }
 
@@ -28,6 +30,7 @@
 
     body {
       margin: 0;
+
       font-family:
         Inter,
         system-ui,
@@ -35,49 +38,59 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+
       background: var(--bg);
       color: var(--text);
     }
 
     /* =========================
-       NAVBAR
+       HEADER
     ========================= */
 
     header {
       background: var(--navy);
       color: white;
+
       position: sticky;
       top: 0;
+
       z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     }
 
     .nav {
       max-width: 1400px;
       margin: auto;
+
       padding: 0 24px;
+
       height: 68px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 20px;
     }
 
     .logo {
       display: flex;
       align-items: center;
+
       gap: 12px;
+
+      color: white;
+      text-decoration: none;
 
       font-size: 20px;
       font-weight: 700;
-      text-decoration: none;
-      color: white;
     }
 
     .logo-mark {
       width: 38px;
       height: 38px;
+
       border-radius: 50%;
 
       display: flex;
@@ -87,8 +100,8 @@
       background: var(--blue);
       color: var(--navy);
 
+      font-size: 14px;
       font-weight: 900;
-      font-size: 15px;
     }
 
     .nav-info {
@@ -97,12 +110,13 @@
     }
 
     /* =========================
-       PAGE
+       MAIN
     ========================= */
 
     main {
       max-width: 1400px;
       margin: auto;
+
       padding: 30px 24px 60px;
     }
 
@@ -112,85 +126,79 @@
 
     .page-header h1 {
       margin: 0 0 7px;
+
       font-size: 32px;
       letter-spacing: -0.5px;
     }
 
     .page-header p {
       margin: 0;
+
       color: var(--muted);
     }
 
     /* =========================
-       TOOLBAR
+       INFO BAR
     ========================= */
 
-    .toolbar {
-      background: var(--card);
+    .info-bar {
+      background: white;
+
       border: 1px solid var(--border);
       border-radius: var(--radius);
 
-      padding: 16px;
+      padding: 15px 18px;
+
+      margin-bottom: 28px;
 
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      align-items: center;
 
-      margin-bottom: 25px;
+      gap: 15px;
     }
 
-    .toolbar-left {
+    .info-left {
       display: flex;
       align-items: center;
+
       gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .toolbar button {
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text);
-
-      border-radius: 9px;
-      padding: 9px 14px;
 
       font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-      transition: .15s;
+      color: var(--muted);
     }
 
-    .toolbar button:hover {
-      border-color: var(--blue);
-      color: var(--blue-dark);
-    }
+    .status {
+      width: 9px;
+      height: 9px;
 
-    .toolbar button.active {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: var(--navy);
+      border-radius: 50%;
+
+      background: #22c55e;
     }
 
     .updated {
       color: var(--muted);
+
       font-size: 13px;
+
       text-align: right;
     }
 
     /* =========================
-       LOADING / ERROR
+       LOADING / ERROR / EMPTY
     ========================= */
 
     .loading,
     .error,
     .empty {
       background: white;
+
       border: 1px solid var(--border);
       border-radius: var(--radius);
 
       padding: 40px;
+
       text-align: center;
 
       color: var(--muted);
@@ -198,8 +206,9 @@
 
     .error {
       color: #b91c1c;
-      border-color: #fecaca;
+
       background: #fff7f7;
+      border-color: #fecaca;
     }
 
     /* =========================
@@ -207,24 +216,26 @@
     ========================= */
 
     .day {
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
     .day-header {
       display: flex;
       align-items: baseline;
+
       gap: 10px;
 
       margin-bottom: 10px;
     }
 
     .day-name {
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 750;
     }
 
     .day-date {
       color: var(--muted);
+
       font-size: 15px;
     }
 
@@ -232,10 +243,13 @@
       margin-left: auto;
 
       color: var(--muted);
+
       font-size: 13px;
+
       background: #e2e8f0;
 
       padding: 4px 8px;
+
       border-radius: 6px;
     }
 
@@ -245,13 +259,16 @@
 
     .schedule {
       background: var(--card);
+
       border: 1px solid var(--border);
       border-radius: var(--radius);
+
       overflow: hidden;
     }
 
     .lesson {
       display: grid;
+
       grid-template-columns: 105px 1fr;
 
       min-height: 96px;
@@ -263,6 +280,10 @@
       border-bottom: none;
     }
 
+    /* =========================
+       TIME
+    ========================= */
+
     .lesson-time {
       padding: 18px 15px;
 
@@ -271,20 +292,26 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-
-      color: var(--muted);
     }
 
     .lesson-start {
       color: var(--text);
+
       font-size: 18px;
       font-weight: 750;
     }
 
     .lesson-end {
+      color: var(--muted);
+
       font-size: 13px;
+
       margin-top: 3px;
     }
+
+    /* =========================
+       LESSON BODY
+    ========================= */
 
     .lesson-body {
       padding: 15px 20px;
@@ -298,8 +325,10 @@
 
     .lesson-top {
       display: flex;
+
       align-items: flex-start;
       justify-content: space-between;
+
       gap: 15px;
     }
 
@@ -313,6 +342,7 @@
 
       font-size: 11px;
       font-weight: 700;
+
       text-transform: uppercase;
 
       padding: 4px 7px;
@@ -327,12 +357,18 @@
       margin-top: 5px;
 
       color: var(--muted);
+
       font-size: 14px;
     }
+
+    /* =========================
+       DETAILS
+    ========================= */
 
     .lesson-details {
       display: flex;
       flex-wrap: wrap;
+
       gap: 8px;
 
       margin-top: 10px;
@@ -345,6 +381,7 @@
       color: #475569;
 
       padding: 4px 7px;
+
       border-radius: 5px;
     }
 
@@ -370,17 +407,10 @@
         font-size: 27px;
       }
 
-      .toolbar {
-        align-items: stretch;
+      .info-bar {
+        align-items: flex-start;
+
         flex-direction: column;
-      }
-
-      .toolbar-left {
-        width: 100%;
-      }
-
-      .toolbar button {
-        flex: 1;
       }
 
       .updated {
@@ -405,479 +435,417 @@
 
       .lesson-top {
         flex-direction: column;
+
         gap: 7px;
       }
 
       .lesson-subject {
         font-size: 16px;
       }
+
+      .week-number {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 
+
 <body>
 
-<header>
-  <div class="nav">
+  <!-- ==========================================
+       HEADER
+  =========================================== -->
 
-    <a class="logo" href="#">
-      <span class="logo-mark">1L</span>
-      <span>Rozvrh 1. LF UK</span>
-    </a>
+  <header>
 
-    <div class="nav-info">
-      1. ročník · 1.LEK-a/1003
-    </div>
+    <div class="nav">
 
-  </div>
-</header>
+      <a
+        href="#"
+        class="logo"
+      >
 
+        <span class="logo-mark">
+          1L
+        </span>
 
-<main>
+        <span>
+          Rozvrh 1. LF UK
+        </span>
 
-  <div class="page-header">
-
-    <h1>Můj rozvrh</h1>
-
-    <p>
-      1. LF Univerzity Karlovy · Všechny předměty
-    </p>
-
-  </div>
+      </a>
 
 
-  <div class="toolbar">
-
-    <div class="toolbar-left">
-
-      <button
-        id="prevWeek"
-        type="button">
-        ← Předchozí týden
-      </button>
-
-      <button
-        id="today"
-        type="button"
-        class="active">
-        Aktuální
-      </button>
-
-      <button
-        id="nextWeek"
-        type="button">
-        Další týden →
-      </button>
+      <div class="nav-info">
+        1. ročník · 1.LEK-a/1003
+      </div>
 
     </div>
 
-    <div
-      id="updated"
-      class="updated">
-      Načítám rozvrh...
+  </header>
+
+
+  <!-- ==========================================
+       MAIN
+  =========================================== -->
+
+  <main>
+
+    <div class="page-header">
+
+      <h1>
+        Můj rozvrh
+      </h1>
+
+      <p>
+        1. LF Univerzity Karlovy · 1. ročník
+      </p>
+
     </div>
 
-  </div>
+
+    <!-- ========================================
+         INFO
+    ========================================= -->
+
+    <div class="info-bar">
+
+      <div class="info-left">
+
+        <span class="status"></span>
+
+        <span>
+          Rozvrh načten ze SIS
+        </span>
+
+      </div>
 
 
-  <div id="app">
+      <div
+        id="updated"
+        class="updated"
+      >
+        Načítám...
+      </div>
 
-    <div class="loading">
-      Načítám rozvrh...
     </div>
 
-  </div>
 
-</main>
+    <!-- ========================================
+         ROZVRH
+    ========================================= -->
 
+    <div id="app">
 
-<script>
+      <div class="loading">
+        Načítám rozvrh...
+      </div>
 
-  // =========================================================
-  // URL TVÉHO CLOUDFLARE WORKERU
-  // =========================================================
+    </div>
 
-  const WORKER_URL =
-    "https://pytle.warezovaadresa.workers.dev/";
-
-
-  // =========================================================
-  // DATA
-  // =========================================================
-
-  let schedule = [];
-
-  let currentWeek = null;
-
-  let weeks = [];
-
-  let currentWeekIndex = 0;
+  </main>
 
 
-  // =========================================================
-  // NAČTENÍ JSON
-  // =========================================================
+  <!-- ==========================================
+       JAVASCRIPT
+  =========================================== -->
 
-  async function loadSchedule() {
+  <script>
 
-    const app =
-      document.getElementById("app");
+    /*
+     * ========================================================
+     * SEM VLOŽ URL TVÉHO CLOUDFLARE WORKERU
+     * ========================================================
+     */
 
-    try {
-
-      app.innerHTML = `
-        <div class="loading">
-          Načítám rozvrh...
-        </div>
-      `;
+    const WORKER_URL =
+      "SEM_VLOŽ_URL_TVÉHO_CLOUDFLARE_WORKERU";
 
 
-      const response =
-        await fetch(
-          WORKER_URL,
-          {
-            cache: "no-store"
-          }
-        );
+    /*
+     * ========================================================
+     * DATA
+     * ========================================================
+     */
+
+    let schedule = [];
 
 
-      if (!response.ok) {
+    /*
+     * ========================================================
+     * NAČTENÍ ROZVRHU
+     * ========================================================
+     */
 
-        throw new Error(
-          `HTTP ${response.status}`
-        );
-      }
+    async function loadSchedule() {
 
-
-      const data =
-        await response.json();
-
-
-      schedule =
-        Array.isArray(data.days)
-          ? data.days
-          : [];
+      const app =
+        document.getElementById("app");
 
 
-      // -------------------------------------------------------
-      // TÝDNY
-      // -------------------------------------------------------
+      try {
 
-      weeks = [
-        ...new Set(
-          schedule
-            .map(day => day.week)
-            .filter(
-              week =>
-                week !== null &&
-                week !== undefined
-            )
-        )
-      ].sort(
-        (a, b) => a - b
-      );
+        app.innerHTML = `
+          <div class="loading">
+            Načítám rozvrh...
+          </div>
+        `;
 
 
-      // -------------------------------------------------------
-      // NAJDI AKTUÁLNÍ TÝDEN
-      // -------------------------------------------------------
-
-      const today =
-        new Date();
-
-
-      const todayString =
-        `${today.getDate()}.${today.getMonth() + 1}.`;
-
-
-      const todayDay =
-        schedule.find(
-          day =>
-            day.date === todayString
-        );
-
-
-      if (todayDay) {
-
-        currentWeek =
-          todayDay.week;
-
-      } else {
-
-        currentWeek =
-          weeks[0] ?? null;
-      }
-
-
-      currentWeekIndex =
-        Math.max(
-          0,
-          weeks.indexOf(
-            currentWeek
-          )
-        );
-
-
-      render();
-
-
-      // -------------------------------------------------------
-      // ČAS AKTUALIZACE
-      // -------------------------------------------------------
-
-      if (data.generatedAt) {
-
-        const generated =
-          new Date(
-            data.generatedAt
+        const response =
+          await fetch(
+            WORKER_URL,
+            {
+              cache: "no-store"
+            }
           );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        /*
+         * ----------------------------------------------------
+         * VEZMEME VŠECHNY DNY Z WORKERU
+         * ----------------------------------------------------
+         */
+
+        schedule =
+          Array.isArray(data.days)
+            ? data.days
+            : [];
+
+
+        /*
+         * ----------------------------------------------------
+         * VYKRESLENÍ
+         * ----------------------------------------------------
+         */
+
+        renderSchedule();
+
+
+        /*
+         * ----------------------------------------------------
+         * DATUM AKTUALIZACE
+         * ----------------------------------------------------
+         */
+
+        if (data.generatedAt) {
+
+          const generated =
+            new Date(
+              data.generatedAt
+            );
+
+
+          document.getElementById(
+            "updated"
+          ).textContent =
+            "Aktualizováno: " +
+            generated.toLocaleString(
+              "cs-CZ",
+              {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+              }
+            );
+
+        } else {
+
+          document.getElementById(
+            "updated"
+          ).textContent =
+            "Rozvrh načten";
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Chyba při načítání:",
+          error
+        );
+
+
+        app.innerHTML = `
+
+          <div class="error">
+
+            <strong>
+              Nepodařilo se načíst rozvrh.
+            </strong>
+
+            <br><br>
+
+            ${escapeHtml(
+              error.message
+            )}
+
+          </div>
+
+        `;
 
 
         document.getElementById(
           "updated"
         ).textContent =
-          "Data ze SIS: " +
-          generated.toLocaleString(
-            "cs-CZ",
-            {
-              day: "2-digit",
-              month: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit"
-            }
-          );
+          "Chyba při načítání";
+
+      }
+
+    }
+
+
+    /*
+     * ========================================================
+     * VYKRESLENÍ CELÉHO ROZVRHU
+     * ========================================================
+     */
+
+    function renderSchedule() {
+
+      const app =
+        document.getElementById("app");
+
+
+      if (
+        !schedule ||
+        schedule.length === 0
+      ) {
+
+        app.innerHTML = `
+
+          <div class="empty">
+
+            Rozvrh neobsahuje žádnou výuku.
+
+          </div>
+
+        `;
+
+        return;
+
       }
 
 
-    } catch (error) {
+      /*
+       * ----------------------------------------------------
+       * DŮLEŽITÉ:
+       *
+       * TADY UŽ NENÍ ŽÁDNÉ FILTROVÁNÍ PODLE TÝDNE.
+       *
+       * ZOBRAZÍME VŠECHNY DNY, KTERÉ VRÁTÍ WORKER.
+       * ----------------------------------------------------
+       */
 
-      console.error(error);
+      app.innerHTML =
+        schedule
+          .map(
+            day =>
+              renderDay(day)
+          )
+          .join("");
 
-
-      app.innerHTML = `
-        <div class="error">
-          <strong>Nepodařilo se načíst rozvrh.</strong>
-          <br><br>
-          ${escapeHtml(error.message)}
-        </div>
-      `;
-
-
-      document.getElementById(
-        "updated"
-      ).textContent =
-        "Chyba při načítání";
-    }
-  }
-
-
-  // =========================================================
-  // VYKRESLENÍ
-  // =========================================================
-
-  function render() {
-
-    const app =
-      document.getElementById("app");
-
-
-    if (
-      !schedule.length
-    ) {
-
-      app.innerHTML = `
-        <div class="empty">
-          Rozvrh neobsahuje žádné předměty.
-        </div>
-      `;
-
-      return;
     }
 
 
-    let visibleDays =
-      schedule;
+    /*
+     * ========================================================
+     * VYKRESLENÍ JEDNOHO DNE
+     * ========================================================
+     */
+
+    function renderDay(day) {
+
+      /*
+       * Zkopírujeme hodiny, abychom
+       * neměnili původní JSON.
+       */
+
+      const classes =
+        Array.isArray(day.classes)
+          ? [...day.classes]
+          : [];
 
 
-    // -------------------------------------------------------
-    // FILTR PODLE TÝDNE
-    // -------------------------------------------------------
+      /*
+       * ----------------------------------------------------
+       * PŘEDMĚTY SEŘADÍME PODLE ČASU
+       * ----------------------------------------------------
+       */
 
-    if (
-      currentWeek !== null
-    ) {
+      classes.sort(
+        (a, b) => {
 
-      visibleDays =
-        schedule.filter(
-          day =>
-            day.week === currentWeek
-        );
-    }
+          return (
+            timeToMinutes(a.start) -
+            timeToMinutes(b.start)
+          );
 
-
-    // -------------------------------------------------------
-    // KDYŽ TÝDEN NENÍ
-    // -------------------------------------------------------
-
-    if (
-      !visibleDays.length
-    ) {
-
-      app.innerHTML = `
-        <div class="empty">
-          Pro tento týden není žádná výuka.
-        </div>
-      `;
-
-      return;
-    }
+        }
+      );
 
 
-    // -------------------------------------------------------
-    // VYKRESLENÍ DNŮ
-    // -------------------------------------------------------
+      /*
+       * ----------------------------------------------------
+       * DEN
+       * ----------------------------------------------------
+       */
 
-    app.innerHTML =
-      visibleDays
-        .map(
-          day =>
-            renderDay(day)
-        )
-        .join("");
-  }
+      return `
+
+        <section class="day">
 
 
-  // =========================================================
-  // DEN
-  // =========================================================
+          <div class="day-header">
 
-  function renderDay(day) {
+            <div class="day-name">
 
-    const classes =
-      Array.isArray(day.classes)
-        ? [...day.classes]
-        : [];
-
-
-    // -------------------------------------------------------
-    // PŘEDMĚTY SEŘADIT PODLE ČASU
-    // -------------------------------------------------------
-
-    classes.sort(
-      (a, b) =>
-        timeToMinutes(a.start) -
-        timeToMinutes(b.start)
-    );
-
-
-    return `
-
-      <section class="day">
-
-        <div class="day-header">
-
-          <div class="day-name">
-            ${escapeHtml(day.day)}
-          </div>
-
-          <div class="day-date">
-            ${escapeHtml(day.date || "")}
-          </div>
-
-          ${
-            day.week
-              ? `
-                <div class="week-number">
-                  ${day.week}. týden
-                </div>
-              `
-              : ""
-          }
-
-        </div>
-
-
-        <div class="schedule">
-
-          ${
-            classes
-              .map(
-                lesson =>
-                  renderLesson(
-                    lesson
-                  )
-              )
-              .join("")
-          }
-
-        </div>
-
-      </section>
-
-    `;
-  }
-
-
-  // =========================================================
-  // PŘEDMĚT
-  // =========================================================
-
-  function renderLesson(lesson) {
-
-    const color =
-      lesson.color ||
-      "#38bdf8";
-
-
-    return `
-
-      <article
-        class="lesson"
-        style="--lesson-color: ${escapeHtml(color)}"
-      >
-
-        <div class="lesson-time">
-
-          <div class="lesson-start">
-            ${escapeHtml(
-              lesson.start || "?"
-            )}
-          </div>
-
-          ${
-            lesson.end
-              ? `
-                <div class="lesson-end">
-                  ${escapeHtml(
-                    lesson.end
-                  )}
-                </div>
-              `
-              : ""
-          }
-
-        </div>
-
-
-        <div class="lesson-body">
-
-          <div class="lesson-top">
-
-            <div class="lesson-subject">
               ${escapeHtml(
-                lesson.subject ||
-                "Neznámý předmět"
+                day.day || ""
               )}
+
             </div>
 
+
+            <div class="day-date">
+
+              ${escapeHtml(
+                day.date || ""
+              )}
+
+            </div>
+
+
             ${
-              lesson.type
+              day.week !== null &&
+              day.week !== undefined
                 ? `
-                  <div class="lesson-type">
+
+                  <div class="week-number">
+
                     ${escapeHtml(
-                      lesson.type
-                    )}
+                      day.week
+                    )}. týden
+
                   </div>
+
                 `
                 : ""
             }
@@ -885,254 +853,354 @@
           </div>
 
 
-          ${
-            lesson.teacher
-              ? `
-                <div class="lesson-teacher">
-                  ${escapeHtml(
-                    lesson.teacher
-                  )}
-                </div>
-              `
-              : ""
-          }
-
-
-          <div class="lesson-details">
+          <div class="schedule">
 
             ${
-              lesson.room
-                ? `
-                  <span class="detail">
-                    Místnost ${escapeHtml(
-                      lesson.room
-                    )}
-                  </span>
+              classes.length > 0
+
+                ? classes
+                    .map(
+                      lesson =>
+                        renderLesson(
+                          lesson
+                        )
+                    )
+                    .join("")
+
+                : `
+
+                  <div class="empty">
+
+                    Tento den není žádná výuka.
+
+                  </div>
+
                 `
-                : ""
             }
 
+          </div>
+
+
+        </section>
+
+      `;
+
+    }
+
+
+    /*
+     * ========================================================
+     * VYKRESLENÍ JEDNÉ HODINY
+     * ========================================================
+     */
+
+    function renderLesson(lesson) {
+
+      const color =
+        lesson.color ||
+        "#38bdf8";
+
+
+      return `
+
+        <article
+          class="lesson"
+          style="--lesson-color: ${escapeHtml(color)}"
+        >
+
+
+          <!-- ČAS -->
+
+          <div class="lesson-time">
+
+            <div class="lesson-start">
+
+              ${escapeHtml(
+                lesson.start || "?"
+              )}
+
+            </div>
+
 
             ${
-              lesson.course
+              lesson.end
+
                 ? `
-                  <span class="detail">
+
+                  <div class="lesson-end">
+
                     ${escapeHtml(
-                      lesson.course
+                      lesson.end
                     )}
-                  </span>
+
+                  </div>
+
                 `
-                : ""
-            }
 
-
-            ${
-              lesson.durationMinutes
-                ? `
-                  <span class="detail">
-                    ${lesson.durationMinutes} min
-                  </span>
-                `
-                : ""
-            }
-
-
-            ${
-              lesson.weekRange
-                ? `
-                  <span class="detail">
-                    ${lesson.weekRange.from}.
-                    –
-                    ${lesson.weekRange.to}.
-                    týden
-                  </span>
-                `
                 : ""
             }
 
           </div>
 
-        </div>
 
-      </article>
+          <!-- INFORMACE O PŘEDMĚTU -->
 
-    `;
-  }
+          <div class="lesson-body">
 
 
-  // =========================================================
-  // OVLÁDÁNÍ TÝDNŮ
-  // =========================================================
-
-  document
-    .getElementById("prevWeek")
-    .addEventListener(
-      "click",
-      () => {
-
-        if (
-          currentWeekIndex <= 0
-        ) {
-          return;
-        }
+            <div class="lesson-top">
 
 
-        currentWeekIndex--;
+              <div class="lesson-subject">
 
-        currentWeek =
-          weeks[
-            currentWeekIndex
-          ];
+                ${escapeHtml(
+                  lesson.subject ||
+                  "Neznámý předmět"
+                )}
 
-        render();
-      }
-    );
+              </div>
 
 
-  document
-    .getElementById("nextWeek")
-    .addEventListener(
-      "click",
-      () => {
+              ${
+                lesson.type
 
-        if (
-          currentWeekIndex >=
-          weeks.length - 1
-        ) {
-          return;
-        }
+                  ? `
 
+                    <div class="lesson-type">
 
-        currentWeekIndex++;
+                      ${escapeHtml(
+                        lesson.type
+                      )}
 
-        currentWeek =
-          weeks[
-            currentWeekIndex
-          ];
+                    </div>
 
-        render();
-      }
-    );
+                  `
+
+                  : ""
+              }
+
+            </div>
 
 
-  document
-    .getElementById("today")
-    .addEventListener(
-      "click",
-      () => {
+            ${
+              lesson.teacher
 
-        const today =
-          new Date();
+                ? `
 
+                  <div class="lesson-teacher">
 
-        const todayString =
-          `${today.getDate()}.${today.getMonth() + 1}.`;
+                    ${escapeHtml(
+                      lesson.teacher
+                    )}
 
+                  </div>
 
-        const todayDay =
-          schedule.find(
-            day =>
-              day.date === todayString
-          );
+                `
+
+                : ""
+            }
 
 
-        if (todayDay) {
-
-          currentWeek =
-            todayDay.week;
-
-          currentWeekIndex =
-            weeks.indexOf(
-              currentWeek
-            );
-
-          render();
-
-        } else {
-
-          currentWeekIndex = 0;
-
-          currentWeek =
-            weeks[0] ?? null;
-
-          render();
-        }
-      }
-    );
+            <div class="lesson-details">
 
 
-  // =========================================================
-  // TIME -> MINUTES
-  // =========================================================
+              ${
+                lesson.room
 
-  function timeToMinutes(
-    time
-  ) {
+                  ? `
 
-    if (!time) {
-      return 9999;
+                    <span class="detail">
+
+                      Místnost
+                      ${escapeHtml(
+                        lesson.room
+                      )}
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+
+              ${
+                lesson.course
+
+                  ? `
+
+                    <span class="detail">
+
+                      ${escapeHtml(
+                        lesson.course
+                      )}
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+
+              ${
+                lesson.durationMinutes
+
+                  ? `
+
+                    <span class="detail">
+
+                      ${escapeHtml(
+                        lesson.durationMinutes
+                      )}
+                      min
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+
+              ${
+                lesson.weekRange
+
+                  ? `
+
+                    <span class="detail">
+
+                      ${escapeHtml(
+                        lesson.weekRange.from
+                      )}
+                      –
+                      ${escapeHtml(
+                        lesson.weekRange.to
+                      )}
+                      . týden
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+
+              ${
+                lesson.subjectId
+
+                  ? `
+
+                    <span class="detail">
+
+                      ${escapeHtml(
+                        lesson.subjectId
+                      )}
+
+                    </span>
+
+                  `
+
+                  : ""
+              }
+
+
+            </div>
+
+
+          </div>
+
+
+        </article>
+
+      `;
+
     }
 
 
-    const match =
-      time.match(
-        /^(\d{1,2}):(\d{2})$/
+    /*
+     * ========================================================
+     * PŘEVOD ČASU NA MINUTY
+     * ========================================================
+     */
+
+    function timeToMinutes(time) {
+
+      if (!time) {
+        return 9999;
+      }
+
+
+      const match =
+        String(time).match(
+          /^(\d{1,2}):(\d{2})$/
+        );
+
+
+      if (!match) {
+        return 9999;
+      }
+
+
+      return (
+        Number(match[1]) * 60 +
+        Number(match[2])
       );
 
-
-    if (!match) {
-      return 9999;
     }
 
 
-    return (
-      Number(match[1]) * 60 +
-      Number(match[2])
-    );
-  }
+    /*
+     * ========================================================
+     * OCHRANA PŘED HTML
+     * ========================================================
+     */
 
+    function escapeHtml(value) {
 
-  // =========================================================
-  // OCHRANA HTML
-  // =========================================================
-
-  function escapeHtml(
-    value
-  ) {
-
-    return String(
-      value ?? ""
-    )
-      .replace(
-        /&/g,
-        "&amp;"
+      return String(
+        value ?? ""
       )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-  }
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
 
 
-  // =========================================================
-  // START
-  // =========================================================
+    /*
+     * ========================================================
+     * START
+     * ========================================================
+     */
 
-  loadSchedule();
+    loadSchedule();
 
-</script>
+  </script>
 
 </body>
 </html>
+```
