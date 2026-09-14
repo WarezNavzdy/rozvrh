@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Můj Rozvrh</title>
+    <style>
+        /* Moderní, jednoduchý vzhled pro mobily i PC */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .day-group {
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .day-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px 8px 0 0;
+            margin: 0;
+            font-size: 1.1em;
+            text-transform: capitalize;
+        }
+        .event {
+            background: white;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .event:last-child {
+            border-radius: 0 0 8px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .time {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        .subject {
+            font-size: 1.15em;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .room {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .meta {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Můj Rozvrh</h1>
+    <div id="schedule">Načítám data...</div>
+    <div class="meta" id="meta-info"></div>
+
+    <script>
+        // Nástroje pro převedení času do češtiny
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const timeOptions = { hour: '2-digit', minute: '2-digit' };
+
+        // Načteme JSON ze stejné složky
+        fetch('rozvrh.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('schedule');
+                container.innerHTML = ''; // Smažeme "Načítám data..."
+
+                if (data.error) {
+                    container.innerHTML = `<p style="color:red;">Chyba skriptu: ${data.error}</p>`;
+                    return;
+                }
+
+                if (!data.data || data.data.length === 0) {
+                    container.innerHTML = '<p>Žádné hodiny nenalezeny.</p>';
+                    return;
+                }
+
+                // Výpis spodních meta informací
+                if (data._meta) {
+                    const updateTime = new Date(data._meta.cas_aktualizace).toLocaleString('cs-CZ');
+                    document.getElementById('meta-info').innerText = `Aktualizováno: ${updateTime}`;
+                }
+
+                // Seskupení událostí do jednotlivých dnů
+                const eventsByDay = {};
+                
+                data.data.forEach(event => {
+                    if (!event.zacatek) return;
+                    
+                    const startDate = new Date(event.zacatek);
+                    const dayString = startDate.toLocaleDateString('cs-CZ', dateOptions);
+                    
+                    if (!eventsByDay[dayString]) {
+                        eventsByDay[dayString] = [];
+                    }
+                    eventsByDay[dayString].push(event);
+                });
+
+                // Vykreslení HTML pro každý den a hodinu
+                for (const [day, events] of Object.entries(eventsByDay)) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'day-group';
+                    
+                    const dayTitle = document.createElement('h2');
+                    dayTitle.className = 'day-title';
+                    dayTitle.innerText = day;
+                    dayDiv.appendChild(dayTitle);
+
+                    events.forEach(event => {
+                        const start = new Date(event.zacatek).toLocaleTimeString('cs-CZ', timeOptions);
+                        const end = event.konec ? new Date(event.konec).toLocaleTimeString('cs-CZ', timeOptions) : '';
+                        
+                        const eventDiv = document.createElement('div');
+                        eventDiv.className = 'event';
+                        eventDiv.innerHTML = `
+                            <div class="time">${start} - ${end}</div>
+                            <div class="subject">${event.predmet}</div>
+                            <div class="room">📍 ${event.mistnost || 'Místnost neuvedena'}</div>
+                        `;
+                        dayDiv.appendChild(eventDiv);
+                    });
+
+                    container.appendChild(dayDiv);
+                }
+            })
+            .catch(error => {
+                document.getElementById('schedule').innerHTML = `<p style="color:red;">Nepodařilo se načíst data z rozvrh.json</p>`;
+                console.error(error);
+            });
+    </script>
+</body>
+</html>
