@@ -1,0 +1,29 @@
+name: Test SIS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Stáhni SIS stránku
+        run: |
+          curl -L \
+            "https://is.cuni.cz/studium/rozvrhng/roz_student_macro.php?skr=2026&sem=1&fak=11110&druh=MGR&kruh=1003&b=Zobraz+MGR.MED.1.LEK.a.1003.P" \
+            -o rozvrh.html
+
+      - name: Zkontroluj soubor
+        run: |
+          echo "Velikost souboru:"
+          wc -c rozvrh.html
+          echo ""
+          echo "Začátek souboru:"
+          head -30 rozvrh.html
+
+      - name: Nahraj HTML jako artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rozvrh-html
+          path: rozvrh.html
